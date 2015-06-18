@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>Timer</title>
+  </head>
+  <body>
+    <div style="font-size:200px;" id="timer">0:00:00.00</div>
+    <div id="times"></div>
+    <script>
+
+var start, running = false, atZero = true;
+var timerDiv = document.getElementById('timer');
+var timesDiv = document.getElementById('times');
+
+function addTime() {
+  timesDiv.innerHTML += timerDiv.innerHTML + '<br />';
+}
+
+window.addEventListener('keypress', function(e) {
+  if (!e) return;
+  if (e.which !== 32 && e.keyCode !== 32 && e.charCode !== 32) {
+    if (running) addTime();
+    return;
+  }
+
+  e.preventDefault();
+
+  if (running) {
+    running = false;
+    atZero = false;
+    return;
+  }
+
+  if (atZero) {
+    running = true;
+    start = Date.now();
+    return;
+  }
+
+  addTime();
+  timerDiv.innerHTML = msToString(0);
+  atZero = true;
+
+});
+
+function padLeft(num, len) {
+  num = '' + num;
+
+  while (num.length < len) {
+    num = '0' + num;
+  }
+  return num;
+}
+
+function msToString(ms) {
+  var secs = Math.floor(ms / 1000);
+  ms = ms % 1000;
+  var mins = Math.floor(secs / 60);
+  secs = secs % 60;
+  var hours = Math.floor(mins / 60);
+  mins = mins % 60;
+  return hours + ':' + padLeft(mins, 2) + ':' + padLeft(secs, 2) + '.' + padLeft(Math.floor(ms / 10), 2);
+}
+
+setInterval(function() {
+  if (running) {
+    timerDiv.innerHTML = msToString(Date.now() - start);
+  }
+}, 10);
+
+    </script>
+  </body>
+</html>
