@@ -31,7 +31,7 @@ function handleEvent(e) {
     return;
   }
 
-  if ((e.wich || e.keyCode || e.charCode) && (e.which !== 32 && e.keyCode !== 32 && e.charCode !== 32)) {
+  if ((e.which || e.keyCode || e.charCode) && (e.which !== 32 && e.keyCode !== 32 && e.charCode !== 32)) {
     if (running) {
       addTime();
     }
