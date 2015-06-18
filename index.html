@@ -12,15 +12,32 @@ var timerDiv = document.getElementById('timer');
 var timesDiv = document.getElementById('times');
 
 function addTime() {
-  timesDiv.innerHTML += timerDiv.innerHTML + '<br />';
+  timesDiv.innerHTML = timerDiv.innerHTML + '<br />' + timesDiv.innerHTML;
 }
 
-window.addEventListener('keypress', function(e) {
-  if (!e) return;
-  if (e.which !== 32 && e.keyCode !== 32 && e.charCode !== 32) {
-    if (running) addTime();
+// Listen on keyboard, mouse, and touch events
+window.addEventListener('touchend', handleEvent);
+window.addEventListener('mouseup',  handleEvent);
+window.addEventListener('keypress', handleEvent);
+
+function handleEvent(e) {
+  if (!e) { return; }
+
+  // If multi-touch, add time.
+  if (e.changedTouches && e.changedTouches.length > 1) {
+    if (running) {
+      addTime();
+    }
     return;
   }
+
+  if ((e.wich || e.keyCode || e.charCode) && (e.which !== 32 && e.keyCode !== 32 && e.charCode !== 32)) {
+    if (running) {
+      addTime();
+    }
+    return;
+  }
+
 
   e.preventDefault();
 
@@ -40,7 +57,7 @@ window.addEventListener('keypress', function(e) {
   timerDiv.innerHTML = msToString(0);
   atZero = true;
 
-});
+}
 
 function padLeft(num, len) {
   num = '' + num;
